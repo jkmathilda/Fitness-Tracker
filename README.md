@@ -1,8 +1,6 @@
 # Fitness Tracker: Exercise Recognition and Repetition Counting Using Wearable Sensors
 
-## Overview
-
-This repository implements a pipeline for analyzing wearable sensor data collected during strength training exercises. Accelerometer and gyroscope signals are processed to extract time- and frequency-domain features, train supervised machine learning models to classify exercises, and count repetitions using signal-processing techniques.
+This project implements a pipeline for analyzing wearable sensor data collected during strength training exercises. Accelerometer and gyroscope signals are processed to extract time- and frequency-domain features, train supervised machine learning models to classify exercises, and count repetitions using signal-processing techniques.
 
 The project focuses on feature engineering, model comparison, and exercise-specific repetition counting.
 

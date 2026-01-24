@@ -13,7 +13,8 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 - Deadlift  
 
 ## Repository Structure
-'''
+
+```
 ├── data/  
 │   ├── raw/            Raw sensor recordings  
 │   ├── interim/        Cleaned and segmented data  
@@ -29,7 +30,8 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 ├── notebooks/          Exploratory analysis  
 ├── requirements.txt  
 └── README.md  
-'''
+```
+
 ## Data Processing Pipeline
 
 ### 1. Data Loading and Cleaning

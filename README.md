@@ -6,8 +6,6 @@ This repository implements a pipeline for analyzing wearable sensor data collect
 
 The project focuses on feature engineering, model comparison, and exercise-specific repetition counting.
 
----
-
 ## Supported Exercises
 
 - Bench Press  
@@ -15,8 +13,6 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 - Barbell Row  
 - Overhead Press (OHP)  
 - Deadlift  
-
----
 
 ## Repository Structure
 
@@ -36,8 +32,6 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 ├── requirements.txt  
 └── README.md  
 
----
-
 ## Data Processing Pipeline
 
 ### 1. Data Loading and Cleaning
@@ -45,19 +39,13 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 - Remove non-exercise segments (e.g. rest)
 - Group recordings by exercise set and participant
 
----
-
 ### 2. Signal Transformation
 - Compute vector magnitudes for accelerometer and gyroscope signals
 - Reduce directional dependence while preserving motion intensity
 
----
-
 ### 3. Windowing
 - Segment continuous sensor data into fixed-length windows
 - Treat each window as one observation for feature extraction
-
----
 
 ### 4. Feature Engineering
 

@@ -60,3 +60,55 @@ For each window, the following features are extracted:
 - Clustering-based features
 
 The result is a structured, ML-ready feature table.
+
+## Exercise Classification
+
+### Task
+Multi-class supervised classification:
+
+engineered motion features → exercise label
+
+### Models
+- Random Forest
+- Feedforward Neural Network
+- k-Nearest Neighbors
+- Decision Tree
+- Naive Bayes
+
+### Evaluation
+- Stratified train/test splits
+- Forward feature selection
+- Hyperparameter tuning via grid search
+- Confusion matrices
+- Participant-based generalization testing
+
+## Repetition Counting
+
+Repetition counting is implemented using deterministic signal-processing methods:
+
+1. Select an exercise-specific sensor signal
+2. Apply a low-pass filter
+3. Detect local maxima via peak detection
+4. Count peaks as repetitions
+
+Different exercises use different signals and filter parameters.
+
+## Combined Inference Logic
+
+Sensor data  
+↓  
+Feature extraction  
+↓  
+Exercise classification (ML)  
+↓  
+Exercise-specific repetition counting  
+
+## Evaluation Metrics
+
+- Classification accuracy
+- Confusion matrices
+- Mean Absolute Error (MAE) for repetition counting
+
+## Acknowledgements
+
+This repository follows and reproduces a YouTube tutorial on wearable sensor data analysis for fitness applications. 

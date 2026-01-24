@@ -12,26 +12,6 @@ The project focuses on feature engineering, model comparison, and exercise-speci
 - Overhead Press (OHP)  
 - Deadlift  
 
-## Repository Structure
-
-```
-├── data/  
-│   ├── raw/            Raw sensor recordings  
-│   ├── interim/        Cleaned and segmented data  
-│   └── processed/     Feature-engineered datasets  
-├── src/  
-│   ├── DataTransformation/  
-│   │   └── LowPassFilter.py  
-│   ├── FeatureEngineering/  
-│   │   └── FeatureBuilder.py  
-│   ├── LearningAlgorithms/  
-│   │   └── ClassificationAlgorithms.py  
-│   └── analysis scripts  
-├── notebooks/          Exploratory analysis  
-├── requirements.txt  
-└── README.md  
-```
-
 ## Data Processing Pipeline
 
 ### 1. Data Loading and Cleaning

@@ -108,6 +108,9 @@ Exercise-specific repetition counting
 - Confusion matrices
 - Mean Absolute Error (MAE) for repetition counting
 
+## Some of the results...
+<img width="473" height="420" alt="Image" src="https://github.com/user-attachments/assets/19553fc4-969d-4f0e-93d1-4f2fa162a214" />
+
 ## Acknowledgements
 
 This repository follows and reproduces a YouTube tutorial on wearable sensor data analysis for fitness applications. 

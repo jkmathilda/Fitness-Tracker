@@ -64,9 +64,7 @@ The result is a structured, ML-ready feature table.
 ## Exercise Classification
 
 ### Task
-Multi-class supervised classification:
-
-engineered motion features → exercise label
+Multi-class supervised classification: engineered motion features → exercise label
 
 ### Models
 - Random Forest
@@ -101,7 +99,8 @@ Feature extraction
 ↓  
 Exercise classification (ML)  
 ↓  
-Exercise-specific repetition counting  
+Exercise-specific repetition counting
+
 
 ## Evaluation Metrics
 

@@ -11,7 +11,6 @@
 
 from sklearn.decomposition import PCA
 from scipy.signal import butter, lfilter, filtfilt
-import copy
 import pandas as pd
 
 # This class removes the high frequency data (that might be considered noise) from the data.
@@ -43,19 +42,17 @@ class LowPassFilter:
 # For this we have to impute these first, be aware of this.
 class PrincipalComponentAnalysis:
 
-    pca = []
-
     def __init__(self):
         self.pca = []
 
     def normalize_dataset(self, data_table, columns):
-        dt_norm = copy.deepcopy(data_table)
+        dt_norm = data_table.copy()
         for col in columns:
-            dt_norm[col] = (data_table[col] - data_table[col].mean()) / (
-                data_table[col].max()
-                - data_table[col].min()
-                # data_table[col].std()
-            )
+            col_range = data_table[col].max() - data_table[col].min()
+            if col_range != 0:
+                dt_norm[col] = (data_table[col] - data_table[col].mean()) / col_range
+            else:
+                dt_norm[col] = 0.0
         return dt_norm
 
     # Perform the PCA on the selected columns and return the explained variance.

@@ -17,7 +17,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn import tree
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score
 import pandas as pd
 import numpy as np
@@ -51,19 +51,17 @@ class ClassificationAlgorithms:
                 temp_selected_features = copy.deepcopy(selected_features)
                 temp_selected_features.append(f)
 
-                # Determine the accuracy of a decision tree learner if we were to add
-                # the feature.
-                (
-                    pred_y_train,
-                    pred_y_test,
-                    prob_training_y,
-                    prob_test_y,
-                ) = ca.decision_tree(
+                # Determine the accuracy using 5-fold cross-validation
+                # to avoid overfitting on training data.
+                dt = DecisionTreeClassifier(min_samples_leaf=50)
+                scores = cross_val_score(
+                    dt,
                     X_train[temp_selected_features],
-                    y_train,
-                    X_train[temp_selected_features],
+                    y_train.values.ravel(),
+                    cv=5,
+                    scoring="accuracy",
                 )
-                perf = accuracy_score(y_train, pred_y_train)
+                perf = scores.mean()
 
                 # If the performance is better than what we have seen so far (we aim for high accuracy)
                 # we set the current feature to the best feature and the same for the best performance.

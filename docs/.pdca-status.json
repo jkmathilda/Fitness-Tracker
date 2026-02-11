@@ -1,0 +1,125 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-02-11T21:15:00.000Z",
+  "activeFeatures": [
+    "data",
+    "Fitness-Tracker",
+    "FrequencyAbstraction.py",
+    "DataTransformation.py",
+    "remove_outliers.py",
+    "TemporalAbstraction.py",
+    "count_repetitions.py"
+  ],
+  "primaryFeature": "data",
+  "features": {
+    "data": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:45:07.229Z",
+        "lastUpdated": "2026-02-11T20:58:11.366Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/data/make_dataset.py"
+    },
+    "Fitness-Tracker": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:47:29.242Z",
+        "lastUpdated": "2026-02-11T21:05:29.866Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/models/train_model.py"
+    },
+    "FrequencyAbstraction.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:48:25.738Z",
+        "lastUpdated": "2026-02-11T20:48:42.953Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/FrequencyAbstraction.py"
+    },
+    "DataTransformation.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:49:08.070Z",
+        "lastUpdated": "2026-02-11T20:49:47.299Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/DataTransformation.py"
+    },
+    "remove_outliers.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:56:50.449Z",
+        "lastUpdated": "2026-02-11T20:58:41.790Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/remove_outliers.py"
+    },
+    "TemporalAbstraction.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:57:08.259Z",
+        "lastUpdated": "2026-02-11T20:57:31.618Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/TemporalAbstraction.py"
+    },
+    "count_repetitions.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-11T20:59:16.528Z",
+        "lastUpdated": "2026-02-11T20:59:16.528Z"
+      },
+      "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/count_repetitions.py"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-02-11T20:26:35.025Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-02-11T21:15:00.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-02-11T21:15:00.000Z",
+      "feature": "pipeline-refactor",
+      "phase": "archived",
+      "action": "archived_to_docs/archive/2026-02/pipeline-refactor/"
+    }
+  ]
+}

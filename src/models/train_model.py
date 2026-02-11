@@ -1,12 +1,18 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from LearningAlgorithms import ClassificationAlgorithms
 import seaborn as sns
 import itertools
 from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.decomposition import PCA as SklearnPCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import joblib
 
+
+if __name__ != '__main__':
+    raise ImportError("This script should be run directly, not imported.")
 
 # Plot settings
 plt.style.use("fivethirtyeight")
@@ -18,18 +24,58 @@ df = pd.read_pickle('../../data/interim/03_data_features.pkl')
 
 
 # --------------------------------------------------------------
-# Create a training and test set
+# Create a training and test set (set-based split)
 # --------------------------------------------------------------
 
-df_train = df.drop(['participant', 'category', 'set'], axis=1)
+# Set-based split prevents temporal leakage between adjacent samples
+sets = df['set'].unique()
+rng = np.random.default_rng(42)
+rng.shuffle(sets)
+split_idx = int(len(sets) * 0.75)
+train_sets = sets[:split_idx]
+test_sets = sets[split_idx:]
 
-X = df_train.drop('label', axis=1)
-y = df_train['label']
+df_train_full = df[df['set'].isin(train_sets)].copy()
+df_test_full = df[df['set'].isin(test_sets)].copy()
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)   
+# Drop metadata and features that leak information
+# - duration: proxy for category (heavy=5reps shorter, medium=10reps longer)
+# - pca_*: fitted on entire dataset in build_features.py
+# - cluster: fitted on entire dataset in build_features.py
+leaked_cols = [c for c in df.columns if c.startswith('pca_')] + ['cluster', 'duration']
+drop_cols = ['participant', 'category', 'set'] + leaked_cols
+drop_cols = [c for c in drop_cols if c in df.columns]
+
+df_train = df_train_full.drop(columns=drop_cols)
+df_test = df_test_full.drop(columns=drop_cols)
+
+# Re-fit PCA on training data only (prevents data leakage)
+predictor_columns = ['acc_x', 'acc_y', 'acc_z', 'gyr_x', 'gyr_y', 'gyr_z']
+pca_scaler = StandardScaler()
+pca = SklearnPCA(n_components=3)
+
+train_pca_input = pca_scaler.fit_transform(df_train[predictor_columns])
+test_pca_input = pca_scaler.transform(df_test[predictor_columns])
+train_pca_result = pca.fit_transform(train_pca_input)
+test_pca_result = pca.transform(test_pca_input)
+
+for i in range(3):
+    df_train[f'pca_{i+1}'] = train_pca_result[:, i]
+    df_test[f'pca_{i+1}'] = test_pca_result[:, i]
+
+# Re-fit KMeans on training data only
+cluster_columns = ['acc_x', 'acc_y', 'acc_z']
+kmeans = KMeans(n_clusters=5, n_init=20, random_state=0)
+df_train['cluster'] = kmeans.fit_predict(df_train[cluster_columns])
+df_test['cluster'] = kmeans.predict(df_test[cluster_columns])
+
+# Prepare X, y
+X_train = df_train.drop('label', axis=1)
+X_test = df_test.drop('label', axis=1)
+y_train = df_train['label']
+y_test = df_test['label']
 
 fig, ax = plt.subplots(figsize=(10, 5))
-df_train['label'].value_counts().plot(kind='bar', ax=ax, color='lightblue', label='Total')
 y_train.value_counts().plot(kind='bar', ax=ax, color='dodgerblue', label='Train')
 y_test.value_counts().plot(kind='bar', ax=ax, color='royalblue', label='Test')
 plt.legend()
@@ -43,8 +89,8 @@ plt.show()
 basic_features = ['acc_x', 'acc_y', 'acc_z', 'gyr_x', 'gyr_y', 'gyr_z']
 square_features = ['acc_r', 'gyr_r']
 pca_features = ['pca_1', 'pca_2', 'pca_3']
-time_features = [f for f in df_train.columns if '_temp_' in f]
-frequency_features = [f for f in df_train.columns if (('_freq' in f) or ('_pse' in f))]
+time_features = [f for f in X_train.columns if '_temp_' in f]
+frequency_features = [f for f in X_train.columns if (('_freq' in f) or ('_pse' in f))]
 cluster_features = ['cluster']
 
 print('Basic features:', len(basic_features))
@@ -71,9 +117,9 @@ selected_features, ordered_features, ordered_scores = learner.forward_selection(
     max_features, X_train, y_train
 )
 
+# Note: duration removed (leaks target info), re-run forward_selection for updated list
 selected_features = [
     'acc_y_freq_0.0_Hz_ws_14',
-    'duration',
     'acc_x_freq_0.0_Hz_ws_14',
     'pca_2',
     'gyr_x',
@@ -117,8 +163,19 @@ score_df = pd.DataFrame()
 
 for i, f in zip(range(len(possible_feature_sets)), feature_names):
     print("Feature set:", i)
-    selected_train_X = X_train[possible_feature_sets[i]]
-    selected_test_X = X_test[possible_feature_sets[i]]
+    # Scale features for distance-based models (KNN, NN)
+    # Tree-based models (RF, DT) and NB are invariant to scaling
+    feature_scaler = StandardScaler()
+    selected_train_X = pd.DataFrame(
+        feature_scaler.fit_transform(X_train[possible_feature_sets[i]]),
+        columns=possible_feature_sets[i],
+        index=X_train.index,
+    )
+    selected_test_X = pd.DataFrame(
+        feature_scaler.transform(X_test[possible_feature_sets[i]]),
+        columns=possible_feature_sets[i],
+        index=X_test.index,
+    )
 
     # First run non deterministic classifiers to average their score.
     performance_test_nn = 0
@@ -222,19 +279,49 @@ plt.show()
 # --------------------------------------------------------------
 # Select best model and evaluate results
 # --------------------------------------------------------------
+best_scaler = StandardScaler()
+best_train_X = pd.DataFrame(
+    best_scaler.fit_transform(X_train[feature_set_4]),
+    columns=feature_set_4, index=X_train.index,
+)
+best_test_X = pd.DataFrame(
+    best_scaler.transform(X_test[feature_set_4]),
+    columns=feature_set_4, index=X_test.index,
+)
 (
-    class_train_y, 
-    class_test_y, 
+    class_train_y,
+    class_test_y,
     class_train_prob_y,
     class_test_prob_y
 ) = learner.random_forest(
-    X_train[feature_set_4], 
-    y_train, 
-    X_test[feature_set_4], 
+    best_train_X,
+    y_train,
+    best_test_X,
     gridsearch=True
 )
 
 accuracy = accuracy_score(y_test, class_test_y)
+print(f"Best model accuracy (set-based split): {accuracy:.4f}")
+
+# Re-train best model directly to save the fitted estimator
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV as GS
+best_rf_gs = GS(
+    RandomForestClassifier(),
+    [{'min_samples_leaf': [2, 10, 50, 100, 200], 'n_estimators': [10, 50, 100], 'criterion': ['gini', 'entropy']}],
+    cv=5, scoring='accuracy'
+)
+best_rf_gs.fit(best_train_X, y_train.values.ravel())
+best_rf_model = best_rf_gs.best_estimator_
+
+# Save the fitted model, scaler, and feature list for prediction
+joblib.dump(best_rf_model, '../../models/best_model_rf.pkl')
+joblib.dump(best_scaler, '../../models/best_scaler.pkl')
+joblib.dump(pca_scaler, '../../models/pca_scaler.pkl')
+joblib.dump(pca, '../../models/pca_model.pkl')
+joblib.dump(kmeans, '../../models/kmeans_model.pkl')
+joblib.dump(feature_set_4, '../../models/feature_set.pkl')
+print("Models saved to ../../models/")
 
 classes = class_test_prob_y.columns
 cm = confusion_matrix(y_test, class_test_y, labels=classes)
@@ -267,19 +354,37 @@ plt.show()
 # Select train and test data based on participant
 # --------------------------------------------------------------
 
-participant_df = df.drop(['set', 'category'], axis=1)
+participant_df = df.drop(columns=['set', 'category'] + leaked_cols, errors='ignore')
 
-X_train = participant_df[participant_df['participant'] != 'A'].drop('label', axis=1)
-y_train = participant_df[participant_df['participant'] != 'A']['label']
+p_train_df = participant_df[participant_df['participant'] != 'A'].copy()
+p_test_df = participant_df[participant_df['participant'] == 'A'].copy()
 
-X_test = participant_df[participant_df['participant'] == 'A'].drop('label', axis=1)
-y_test = participant_df[participant_df['participant'] == 'A']['label']
+p_train_df = p_train_df.drop('participant', axis=1)
+p_test_df = p_test_df.drop('participant', axis=1)
 
-X_train = X_train.drop('participant', axis=1)
-X_test = X_test.drop('participant', axis=1)
+# Re-fit PCA on participant training data only
+p_pca_scaler = StandardScaler()
+p_pca = SklearnPCA(n_components=3)
+p_train_pca = p_pca_scaler.fit_transform(p_train_df[predictor_columns])
+p_test_pca = p_pca_scaler.transform(p_test_df[predictor_columns])
+p_train_pca_result = p_pca.fit_transform(p_train_pca)
+p_test_pca_result = p_pca.transform(p_test_pca)
+
+for i in range(3):
+    p_train_df[f'pca_{i+1}'] = p_train_pca_result[:, i]
+    p_test_df[f'pca_{i+1}'] = p_test_pca_result[:, i]
+
+# Re-fit KMeans on participant training data only
+p_kmeans = KMeans(n_clusters=5, n_init=20, random_state=0)
+p_train_df['cluster'] = p_kmeans.fit_predict(p_train_df[cluster_columns])
+p_test_df['cluster'] = p_kmeans.predict(p_test_df[cluster_columns])
+
+X_train = p_train_df.drop('label', axis=1)
+y_train = p_train_df['label']
+X_test = p_test_df.drop('label', axis=1)
+y_test = p_test_df['label']
 
 fig, ax = plt.subplots(figsize=(10, 5))
-df_train['label'].value_counts().plot(kind='bar', ax=ax, color='lightblue', label='Total')
 y_train.value_counts().plot(kind='bar', ax=ax, color='dodgerblue', label='Train')
 y_test.value_counts().plot(kind='bar', ax=ax, color='royalblue', label='Test')
 plt.legend()
@@ -289,16 +394,24 @@ plt.show()
 # --------------------------------------------------------------
 # Use best model again and evaluate results
 # --------------------------------------------------------------
-
+p_scaler = StandardScaler()
+p_train_scaled = pd.DataFrame(
+    p_scaler.fit_transform(X_train[feature_set_4]),
+    columns=feature_set_4, index=X_train.index,
+)
+p_test_scaled = pd.DataFrame(
+    p_scaler.transform(X_test[feature_set_4]),
+    columns=feature_set_4, index=X_test.index,
+)
 (
-    class_train_y, 
-    class_test_y, 
+    class_train_y,
+    class_test_y,
     class_train_prob_y,
     class_test_prob_y
 ) = learner.random_forest(
-    X_train[feature_set_4], 
-    y_train, 
-    X_test[feature_set_4], 
+    p_train_scaled,
+    y_train,
+    p_test_scaled,
     gridsearch=True
 )
 
@@ -334,16 +447,24 @@ plt.show()
 # --------------------------------------------------------------
 # Try a simpler model with the selected features
 # --------------------------------------------------------------
-
+nn_scaler = StandardScaler()
+nn_train_X = pd.DataFrame(
+    nn_scaler.fit_transform(X_train[selected_features]),
+    columns=selected_features, index=X_train.index,
+)
+nn_test_X = pd.DataFrame(
+    nn_scaler.transform(X_test[selected_features]),
+    columns=selected_features, index=X_test.index,
+)
 (
-    class_train_y, 
-    class_test_y, 
+    class_train_y,
+    class_test_y,
     class_train_prob_y,
     class_test_prob_y
 ) = learner.feedforward_neural_network(
-    X_train[selected_features], 
-    y_train, 
-    X_test[selected_features], 
+    nn_train_X,
+    y_train,
+    nn_test_X,
     gridsearch=False
 )
 

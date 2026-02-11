@@ -1,0 +1,315 @@
+{
+  "timestamp": "2026-02-11T21:05:46.031Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-11T21:05:29.866Z",
+    "activeFeatures": [
+      "data",
+      "Fitness-Tracker",
+      "FrequencyAbstraction.py",
+      "DataTransformation.py",
+      "remove_outliers.py",
+      "TemporalAbstraction.py",
+      "count_repetitions.py"
+    ],
+    "primaryFeature": "data",
+    "features": {
+      "data": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:45:07.229Z",
+          "lastUpdated": "2026-02-11T20:58:11.366Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/data/make_dataset.py"
+      },
+      "Fitness-Tracker": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:47:29.242Z",
+          "lastUpdated": "2026-02-11T21:05:29.866Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/models/train_model.py"
+      },
+      "FrequencyAbstraction.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:48:25.738Z",
+          "lastUpdated": "2026-02-11T20:48:42.953Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/FrequencyAbstraction.py"
+      },
+      "DataTransformation.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:49:08.070Z",
+          "lastUpdated": "2026-02-11T20:49:47.299Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/DataTransformation.py"
+      },
+      "remove_outliers.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:56:50.449Z",
+          "lastUpdated": "2026-02-11T20:58:41.790Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/remove_outliers.py"
+      },
+      "TemporalAbstraction.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:57:08.259Z",
+          "lastUpdated": "2026-02-11T20:57:31.618Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/TemporalAbstraction.py"
+      },
+      "count_repetitions.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-11T20:59:16.528Z",
+          "lastUpdated": "2026-02-11T20:59:16.528Z"
+        },
+        "lastFile": "/Users/junkyunglee/Codes/Projects/Fitness-Tracker/src/features/count_repetitions.py"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-02-11T20:26:35.025Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-02-11T21:05:29.866Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-11T20:45:07.229Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:45:44.357Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:46:05.889Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:46:57.971Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:47:29.242Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:47:41.856Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:48:25.738Z",
+        "feature": "FrequencyAbstraction.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:48:42.953Z",
+        "feature": "FrequencyAbstraction.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:49:08.070Z",
+        "feature": "DataTransformation.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:49:33.293Z",
+        "feature": "DataTransformation.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:49:47.299Z",
+        "feature": "DataTransformation.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:53:23.701Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:53:41.800Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:53:53.448Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:54:10.419Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:54:25.001Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:54:41.790Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:54:50.746Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:55:00.237Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:55:17.444Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:56:50.449Z",
+        "feature": "remove_outliers.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:57:08.259Z",
+        "feature": "TemporalAbstraction.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:57:31.618Z",
+        "feature": "TemporalAbstraction.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:57:51.717Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:58:11.366Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:58:41.790Z",
+        "feature": "remove_outliers.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T20:59:16.528Z",
+        "feature": "count_repetitions.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T21:00:15.251Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T21:00:27.893Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T21:00:39.757Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T21:01:02.685Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-11T21:05:29.866Z",
+        "feature": "Fitness-Tracker",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}

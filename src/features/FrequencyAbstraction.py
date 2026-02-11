@@ -45,7 +45,7 @@ class FourierTransformation:
             for col in cols:
                 real_ampl, imag_ampl = self.find_fft_transformation(
                     data_table[col].iloc[
-                        i - window_size : min(i + 1, len(data_table.index))
+                        i - window_size + 1 : i + 1
                     ],
                     sampling_rate,
                 )
@@ -59,11 +59,24 @@ class FourierTransformation:
                 data_table.loc[i, col + "_max_freq"] = freqs[
                     np.argmax(real_ampl[0 : len(real_ampl)])
                 ]
-                data_table.loc[i, col + "_freq_weighted"] = float(
-                    np.sum(freqs * real_ampl)
-                ) / np.sum(real_ampl)
+                ampl_sum = np.sum(real_ampl)
+                if ampl_sum != 0:
+                    data_table.loc[i, col + "_freq_weighted"] = float(
+                        np.sum(freqs * real_ampl)
+                    ) / ampl_sum
+                else:
+                    data_table.loc[i, col + "_freq_weighted"] = 0.0
+
                 PSD = np.divide(np.square(real_ampl), float(len(real_ampl)))
-                PSD_pdf = np.divide(PSD, np.sum(PSD))
-                data_table.loc[i, col + "_pse"] = -np.sum(np.log(PSD_pdf) * PSD_pdf)
+                psd_sum = np.sum(PSD)
+                if psd_sum != 0:
+                    PSD_pdf = np.divide(PSD, psd_sum)
+                    # Avoid log(0) by filtering out zero entries
+                    nonzero_mask = PSD_pdf > 0
+                    data_table.loc[i, col + "_pse"] = -np.sum(
+                        np.log(PSD_pdf[nonzero_mask]) * PSD_pdf[nonzero_mask]
+                    )
+                else:
+                    data_table.loc[i, col + "_pse"] = 0.0
 
         return data_table
